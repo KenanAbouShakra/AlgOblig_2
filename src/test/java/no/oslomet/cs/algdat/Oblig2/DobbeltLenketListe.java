@@ -37,11 +37,34 @@ public class DobbeltLenketListe<T> implements Liste<T> {
     private int endringer;         // antall endringer i listen
 
     public DobbeltLenketListe() {
-        throw new UnsupportedOperationException();
+        hode=null;
+        hale=null;
+        antall=0;
+        endringer=0;
     }
 
     public DobbeltLenketListe(T[] a) {
-        throw new UnsupportedOperationException();
+       if(a==null) throw new NullPointerException("Tabellen a er null!");
+       if(a.length>0){
+           int i=0;
+           for(;i<a.length;++i){
+               if(a[i]!=null) {
+                   hode=new Node<>(a[i]);
+                   antall ++;
+                   break;
+               }}
+               hale=hode;
+               if(hode!=null){
+                   i++;
+                   for(;i<a.length;i++) {
+                       if (a[i] != null) {
+                           hale.neste = new Node<>(a[i], hale, null);
+                           hale = hale.neste;
+                           antall++;
+                       }
+                   }
+           }
+       }
     }
 
     public Liste<T> subliste(int fra, int til) {
@@ -50,12 +73,13 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
     @Override
     public int antall() {
-        throw new UnsupportedOperationException();
+        return antall;
     }
 
     @Override
     public boolean tom() {
-        throw new UnsupportedOperationException();
+        if(antall==0) return true;
+        else return false;
     }
 
     @Override
@@ -156,6 +180,13 @@ public class DobbeltLenketListe<T> implements Liste<T> {
     public static <T> void sorter(Liste<T> liste, Comparator<? super T> c) {
         throw new UnsupportedOperationException();
     }
+
+    public static void main(String[] args) {
+        String[] s = {"Ole", null, "Per", "Kari", null};
+        Liste<String> liste = new DobbeltLenketListe<>(s);
+        System.out.println(liste.antall() + " " + liste.tom());
+    }
+
 
 } // class DobbeltLenketListe
 
