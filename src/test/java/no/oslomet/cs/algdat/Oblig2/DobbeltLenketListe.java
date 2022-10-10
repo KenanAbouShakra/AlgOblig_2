@@ -194,12 +194,70 @@ private void indeksKontroll(int indeks){
 
     @Override
     public boolean fjern(T verdi) {
-        throw new UnsupportedOperationException();
+        if (verdi == null) {
+            return false;
+        }
+        Node<T> current = hode;
+        if (verdi.equals(hode.verdi)) {
+            if (current.neste != null) {
+                hode = hode.neste;
+                hode.forrige = null;
+            } else {
+                hode = hale = null;
+            } antall--;
+            endringer++;
+            return true;
+        }
+        else if (verdi.equals(hale.verdi)) {
+            hale = hale.forrige;
+            hale.neste = null;
+            antall--;
+            endringer++;
+            return true;
+        } else {
+            for (int i = 0; i < antall - 1; i++) {
+                current = current.neste;
+                if (verdi.equals(current.verdi)) {
+                    current.forrige.neste = current.neste;
+                    current.neste.forrige = current.forrige;
+                    antall--;
+                    endringer++;
+                    return true;
+                }
+            }
+        }return false;
     }
 
     @Override
     public T fjern(int indeks) {
-        throw new UnsupportedOperationException();
+        indeksKontroll(indeks,false);
+        Node<T> current=hode;
+        T verdi ;
+        if(indeks==0){  //Hode fjernes if indeksen=0
+            if(current.neste!=null){
+                hode=current.neste;
+                hode.forrige=null;
+
+            }else {
+                hode=hale=null;
+            } verdi=current.verdi;
+
+        }else if(indeks==antall-1){//Hale fjernes if indeksen=Antall-1
+            current=hale;
+            hale=current.forrige;
+            hale.neste=null;
+            verdi=current.verdi;
+        }else { //mellom noder fjernes
+            for(int i=0; i<indeks;i++){
+                current=current.neste;
+            }
+            current.forrige.neste=current.neste;
+            current.neste.forrige=current.forrige;
+           verdi=current.verdi;
+        }
+        antall--;
+        endringer++;
+        return verdi;
     }
 
     @Override
@@ -298,6 +356,8 @@ private void indeksKontroll(int indeks){
         System.out.println(liste.antall() + " " + liste.tom());
         liste .leggInn("Kenan");
         System.out.println(liste.toString());
+        liste.fjern(4);
+        System.out.println(liste.toString()+" " +liste.fjern(2));
         DobbeltLenketListe<Integer> liste1 = new DobbeltLenketListe<>();
         System.out.println(liste1.toString() + " " + liste1.omvendtString());
         for (int i = 1; i <= 3; i++) {
