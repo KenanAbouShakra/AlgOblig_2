@@ -138,9 +138,11 @@ public class DobbeltLenketListe<T> implements Liste<T> {
             hode=hale=current;
         }
         else if(indeks==0){
+            hode.forrige=current;
             current.neste=hode;
             hode=current;
         }else if(indeks==antall){
+            hale.neste=current;
             current.forrige=hale;
             hale=current;
         }else {
@@ -262,7 +264,10 @@ private void indeksKontroll(int indeks){
 
     @Override
     public void nullstill() {
-        throw new UnsupportedOperationException();
+        int n=antall;
+        for(int i=0; i<n; i++){
+            fjern(i);
+        }
     }
 
     @Override
@@ -306,11 +311,12 @@ private void indeksKontroll(int indeks){
 
     @Override
     public Iterator<T> iterator() {
-        throw new UnsupportedOperationException();
+        return new DobbeltLenketListeIterator();
     }
 
     public Iterator<T> iterator(int indeks) {
-        throw new UnsupportedOperationException();
+        indeksKontroll(indeks);
+        return new DobbeltLenketListeIterator(indeks);
     }
 
     private class DobbeltLenketListeIterator implements Iterator<T> {
@@ -325,7 +331,9 @@ private void indeksKontroll(int indeks){
         }
 
         private DobbeltLenketListeIterator(int indeks) {
-            throw new UnsupportedOperationException();
+           denne=finnNode(indeks);
+           fjernOK=false;
+           iteratorendringer=endringer;
         }
 
         @Override
@@ -335,7 +343,17 @@ private void indeksKontroll(int indeks){
 
         @Override
         public T next() {
-            throw new UnsupportedOperationException();
+            if(iteratorendringer!=endringer){
+                throw new ConcurrentModificationException("iterattorendringene er ikke lik endringer");
+            }
+            if(!hasNext()){
+                throw new NoSuchElementException("tømme verdier");
+            }
+            T currrentVerdi=denne.verdi;
+            denne=denne.neste;
+            fjernOK=true;
+            return currrentVerdi;
+
         }
 
         @Override
@@ -371,6 +389,7 @@ private void indeksKontroll(int indeks){
         System.out.println(liste2.subliste(5,5));  // []
         System.out.println(liste2.subliste(8,liste2.antall()));
         System.out.println(liste.indeksTil("tt"));
+
     }
 
 
