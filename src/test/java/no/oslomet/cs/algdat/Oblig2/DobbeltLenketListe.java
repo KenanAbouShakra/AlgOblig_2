@@ -363,7 +363,35 @@ private void indeksKontroll(int indeks){
 
         @Override
         public void remove() {
-            throw new UnsupportedOperationException();
+            if(!fjernOK) throw new IllegalStateException("metoden kan ikke fjerner noen elementer");
+            if(endringer!=iteratorendringer){
+                throw new ConcurrentModificationException(" endringer og iteratorendringer er forskjellige");
+            }
+            fjernOK=false;
+            Node<T> p;
+            if(denne==null){
+                p=hale;
+            }else {
+                p=denne.forrige;
+            }
+
+            if (p==hode){ // p er venstre peker til denne
+                if(antall==1){
+                    hode=hale=null; // hvis er det bare en node
+                }else {
+                    hode=hode.neste; // fjern hode
+                    hode.forrige=null;
+                }
+            }else if(p==hale){
+                hale=hale.forrige; //fjern hale
+                hale.neste=null;
+            }else {
+                p.forrige.neste=p.neste; // fjern p
+                p.neste.forrige=p.forrige;
+            }
+            antall--;
+            endringer++;
+            iteratorendringer++; // endre antall, nedringer og iteratorendringer
         }
 
     } // class DobbeltLenketListeIterator
@@ -372,7 +400,7 @@ private void indeksKontroll(int indeks){
         throw new UnsupportedOperationException();
     }
 
-  /*  public static void main(String[] args) {
+   /* public static void main(String[] args) {
         String[] s = {"Ole", null, "Per", "Kari", null};
         DobbeltLenketListe<String> liste = new DobbeltLenketListe<>(s);
         liste.leggInn(2,"Aos");
@@ -396,7 +424,6 @@ private void indeksKontroll(int indeks){
         System.out.println(liste.indeksTil("tt"));
 
     }*/
-
 
 } // class DobbeltLenketListe
 
