@@ -126,12 +126,40 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
     @Override
     public void leggInn(int indeks, T verdi) {
-        throw new UnsupportedOperationException();
+        //sjekk indeksen
+        if(indeks > antall) {
+            throw new IndexOutOfBoundsException("feil, index må ikke være større enn antall noder");}
+        else if(indeks <0){
+            throw new IndexOutOfBoundsException("feil, index må ikke være negativ");}
+        //sjekk verdien
+        if(verdi==null) throw new NullPointerException("verdien må ikke være null");
+        Node<T> current=new Node(verdi, null, null);
+        if(tom()){
+            hode=hale=current;
+        }
+        else if(indeks==0){
+            current.neste=hode;
+            hode=current;
+        }else if(indeks==antall){
+            current.forrige=hale;
+            hale=current;
+        }else {
+            Node<T> r=finnNode(indeks);
+            Node<T> p=r.forrige;
+            current.neste=r;
+            current.forrige=p;
+            p.neste=current;
+            r.forrige=current;
+
+        }
+        antall ++;
+        endringer ++;
     }
 
     @Override
     public boolean inneholder(T verdi) {
-        throw new UnsupportedOperationException();
+      if(indeksTil(verdi)==-1) return false;
+      return true;
     }
 private void indeksKontroll(int indeks){
         if(indeks>=antall || indeks<0) throw new IndexOutOfBoundsException("feil index");
@@ -144,7 +172,12 @@ private void indeksKontroll(int indeks){
 
     @Override
     public int indeksTil(T verdi) {
-        throw new UnsupportedOperationException();
+            Node<T> current=hode;
+            for(int i=0;i<antall;i++, current=current.neste){
+             if(current.verdi.equals(verdi)){
+                 return i;
+            }
+        } return -1;
     }
 
     @Override
@@ -261,6 +294,7 @@ private void indeksKontroll(int indeks){
     public static void main(String[] args) {
         String[] s = {"Ole", null, "Per", "Kari", null};
         DobbeltLenketListe<String> liste = new DobbeltLenketListe<>(s);
+        liste.leggInn(2,"Aos");
         System.out.println(liste.antall() + " " + liste.tom());
         liste .leggInn("Kenan");
         System.out.println(liste.toString());
@@ -276,6 +310,7 @@ private void indeksKontroll(int indeks){
         System.out.println(liste2.subliste(3,8));  // [D, E, F, G, H]
         System.out.println(liste2.subliste(5,5));  // []
         System.out.println(liste2.subliste(8,liste2.antall()));
+        System.out.println(liste.indeksTil("tt"));
     }
 
 
