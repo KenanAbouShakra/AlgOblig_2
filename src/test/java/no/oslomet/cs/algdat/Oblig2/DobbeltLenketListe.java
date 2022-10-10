@@ -264,10 +264,15 @@ private void indeksKontroll(int indeks){
 
     @Override
     public void nullstill() {
-        int n=antall;
-        for(int i=0; i<n; i++){
-            fjern(i);
-        }
+       for(Node<T> t=hode; t!=null; t=t.neste){
+
+           t.forrige=null;
+           t.neste=null;
+           t.verdi=null;
+       }
+       hode=hale=null;
+       antall=0;
+       endringer++;
     }
 
     @Override
@@ -367,7 +372,7 @@ private void indeksKontroll(int indeks){
         throw new UnsupportedOperationException();
     }
 
-    public static void main(String[] args) {
+  /*  public static void main(String[] args) {
         String[] s = {"Ole", null, "Per", "Kari", null};
         DobbeltLenketListe<String> liste = new DobbeltLenketListe<>(s);
         liste.leggInn(2,"Aos");
@@ -390,7 +395,7 @@ private void indeksKontroll(int indeks){
         System.out.println(liste2.subliste(8,liste2.antall()));
         System.out.println(liste.indeksTil("tt"));
 
-    }
+    }*/
 
 
 } // class DobbeltLenketListe
