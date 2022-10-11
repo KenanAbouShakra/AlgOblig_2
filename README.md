@@ -9,6 +9,7 @@ Oppgaven er levert av følgende studenter:
 I oppgaven har jeg hatt følgende hele jobben
 
 # Oppgavebeskrivelse
+I fleste oppgavene mine brukte jeg både kopendieten, vidioene og søkte jeg på nette for å forstå exeptions. 
 
 I oppgave 1 så gikk jeg frem ved å lage metoder: antall og tom og konstrektøren.
 
@@ -18,7 +19,7 @@ I oppgave 3 så gikk jeg frem ved å lage metoder: finnNode, hent, opdater til i
 
 I oppgave 4 så gikk jeg frem ved å lage metoder for å finne indeks til en gitte verdi og verdien til en indeks;
 
-I oppgave 5 så gikk jeg frem ved å lage metoden for å logge inn en verdi i indeksen. 
+I oppgave 5 så gikk jeg frem ved å lage metoden for å logge inn en verdi i indeksen. I denne oppgaven brukte jeg måten som ble brukt i forelesningsvidioene.
 
 I oppgave 6 så gikk jeg frem ved å lage metoder for å fjerne en node em en gitt indeks og en node med en gitt verdi.
 
