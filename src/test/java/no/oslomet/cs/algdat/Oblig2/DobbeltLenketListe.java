@@ -99,7 +99,7 @@ public class DobbeltLenketListe<T> implements Liste<T> {
     public boolean leggInn(T verdi) {
         Objects.requireNonNull(verdi);
         Node<T> current=hale;
-        if(tom()){
+        if(tom()){ //antall er lik null
             hode=hale=new Node<>(verdi);
         }else {
             current.neste=new Node<>(verdi);
@@ -113,11 +113,12 @@ public class DobbeltLenketListe<T> implements Liste<T> {
     private Node<T> finnNode(int indeks) {
         indeksKontroll(indeks);
         Node<T> current=hode;
-        if(indeks<2){
-            if(indeks==0) return current;
-            return current.neste;
+        if(indeks<antall/2){ // hvis indeksen i det første halvet av interevallet begginn å søke fra hode
+            for(int i=0; i<indeks; i++){
+                current=current.neste;
+            }return current;
         }else{
-            current=hale;
+            current=hale; // hvis indeksen i det andre halvet av interevallet begginn å søke fra hale
             for(int i=antall-1; i>indeks; i--){
                 current=current.forrige;
             }return current;
@@ -137,15 +138,15 @@ public class DobbeltLenketListe<T> implements Liste<T> {
         if(tom()){
             hode=hale=current;
         }
-        else if(indeks==0){
+        else if(indeks==0){ //oppdater hode
             hode.forrige=current;
             current.neste=hode;
             hode=current;
-        }else if(indeks==antall){
+        }else if(indeks==antall){ //oppdater hale
             hale.neste=current;
             current.forrige=hale;
             hale=current;
-        }else {
+        }else { //for å legge en ny node mellom to noder
             Node<T> r=finnNode(indeks);
             Node<T> p=r.forrige;
             current.neste=r;
@@ -160,11 +161,11 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
     @Override
     public boolean inneholder(T verdi) {
-      if(indeksTil(verdi)==-1) return false;
+      if(indeksTil(verdi)==-1) return false; //brukte måten indeksTil
       return true;
     }
 private void indeksKontroll(int indeks){
-        if(indeks>=antall || indeks<0) throw new IndexOutOfBoundsException("feil index");
+        if(indeks>=antall || indeks<0) throw new IndexOutOfBoundsException("feil index"); // for å ta indeksen i et riktig interevalle
 }
     @Override
     public T hent(int indeks) {
@@ -175,20 +176,20 @@ private void indeksKontroll(int indeks){
     @Override
     public int indeksTil(T verdi) {
             Node<T> current=hode;
-            for(int i=0;i<antall;i++, current=current.neste){
+            for(int i=0;i<antall;i++){
              if(current.verdi.equals(verdi)){
-                 return i;
-            }
-        } return -1;
+                 return i; //return indeksen
+            }current=current.neste;
+        } return -1; //hvis verdien finnes ikke
     }
 
     @Override
     public T oppdater(int indeks, T nyverdi) {
         Objects.requireNonNull(nyverdi);
-        indeksKontroll(indeks,false);
+        indeksKontroll(indeks);
         T gammelVerdi=finnNode(indeks).verdi;
         Node<T> current=finnNode(indeks);
-         current.verdi=nyverdi;
+         current.verdi=nyverdi; //oppdater verdien
          endringer ++;
          return gammelVerdi;
 
@@ -201,23 +202,23 @@ private void indeksKontroll(int indeks){
         }
         Node<T> current = hode;
         if (verdi.equals(hode.verdi)) {
-            if (current.neste != null) {
-                hode = hode.neste;
+            if (antall>1) {
+                hode = hode.neste; //fjern første verdi
                 hode.forrige = null;
-            } else {
+            } else if(antall==1) {
                 hode = hale = null;
             } antall--;
             endringer++;
             return true;
         }
         else if (verdi.equals(hale.verdi)) {
-            hale = hale.forrige;
+            hale = hale.forrige; //fjern siste verdi
             hale.neste = null;
             antall--;
             endringer++;
             return true;
         } else {
-            for (int i = 0; i < antall - 1; i++) {
+            for (int i = 0; i < antall - 1; i++) { //fjern en verdi mellom to verdier
                 current = current.neste;
                 if (verdi.equals(current.verdi)) {
                     current.forrige.neste = current.neste;
@@ -232,10 +233,10 @@ private void indeksKontroll(int indeks){
 
     @Override
     public T fjern(int indeks) {
-        indeksKontroll(indeks,false);
+        indeksKontroll(indeks);
         Node<T> current=hode;
         T verdi ;
-        if(indeks==0){  //Hode fjernes if indeksen=0
+        if(indeks==0){  //Hode fjernes hvis indeksen=0
             if(current.neste!=null){
                 hode=current.neste;
                 hode.forrige=null;
@@ -244,12 +245,12 @@ private void indeksKontroll(int indeks){
                 hode=hale=null;
             } verdi=current.verdi;
 
-        }else if(indeks==antall-1){//Hale fjernes if indeksen=Antall-1
+        }else if(indeks==antall-1){//Hale fjernes hvis indeksen=Antall-1
             current=hale;
             hale=current.forrige;
             hale.neste=null;
             verdi=current.verdi;
-        }else { //mellom noder fjernes
+        }else { //mellomNoder fjernes
             for(int i=0; i<indeks;i++){
                 current=current.neste;
             }
@@ -264,13 +265,12 @@ private void indeksKontroll(int indeks){
 
     @Override
     public void nullstill() {
-       for(Node<T> t=hode; t!=null; t=t.neste){
-
+        Node<T> t=hode;
+       for(int i=1; i<antall-1;i++){ //alle nodene mellom hode og hale fjernes
+           t=t.neste;
            t.forrige=null;
-           t.neste=null;
-           t.verdi=null;
        }
-       hode=hale=null;
+       hode=hale=null; //hode og hale fjernes
        antall=0;
        endringer++;
     }
