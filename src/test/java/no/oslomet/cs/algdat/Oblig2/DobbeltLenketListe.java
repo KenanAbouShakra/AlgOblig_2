@@ -218,7 +218,7 @@ private void indeksKontroll(int indeks){
             endringer++;
             return true;
         } else {
-            for (int i = 0; i < antall - 1; i++) { //fjern en verdi mellom to verdier
+            for (int i = 0; i < antall - 1; i++) { //fjern en node mellom to noder
                 current = current.neste;
                 if (verdi.equals(current.verdi)) {
                     current.forrige.neste = current.neste;
