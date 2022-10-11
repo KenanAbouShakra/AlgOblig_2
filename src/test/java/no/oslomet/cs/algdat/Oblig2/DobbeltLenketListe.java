@@ -67,7 +67,7 @@ public class DobbeltLenketListe<T> implements Liste<T> {
     }
 
     public Liste<T> subliste(int fra, int til) {
-        fratilKontroll(antall,fra,til);
+        fratilKontroll(antall,fra,til);  //kontrellere at alle verdiene er gjeldige
         Liste<T> a=new DobbeltLenketListe<>();
         for(int i=fra; i<til; i++){
             a.leggInn(finnNode(i).verdi);
@@ -82,16 +82,16 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
     @Override
     public boolean tom() {
-        if(antall==0) return true;
+        if(antall==0) return true; // true for tømme lister
         else return false;
     }
     //hjelpemetoder
     private void fratilKontroll(int antallListe, int fra ,int til){
-        if(fra<0 || til > antallListe){
+        if(fra<0 || til > antallListe){  //fra og til må være inn i interevalle
             throw new IndexOutOfBoundsException("feil intervall");
         }
     if (fra > til ){
-        throw new IllegalArgumentException("feil intervall");
+        throw new IllegalArgumentException("feil intervall"); //fra må være større enn til
     }
     }
 
