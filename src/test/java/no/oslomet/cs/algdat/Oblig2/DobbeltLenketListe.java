@@ -96,6 +96,7 @@ public class DobbeltLenketListe<T> implements Liste<T> {
     }
     }
 
+
     @Override
     public boolean leggInn(T verdi) {
         Objects.requireNonNull(verdi);
