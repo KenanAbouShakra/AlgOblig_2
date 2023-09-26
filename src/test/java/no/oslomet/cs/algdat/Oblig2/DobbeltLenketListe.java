@@ -51,17 +51,18 @@ public class DobbeltLenketListe<T> implements Liste<T> {
                    hode=new Node<>(a[i]);  //for å gi hode den første verdien i listen som ikke er null.
                    antall ++;
                    break;
-               }}
-               hale=hode;
-               if(hode!=null){
-                   i++;
-                   for(;i<a.length;i++) {
-                       if (a[i] != null) {
-                           hale.neste = new Node<>(a[i], hale, null); // hale akal flytte fra en verdi til neste verdi i hele listen
-                           hale = hale.neste;
-                           antall++;
-                       }
+               }
+           }
+           hale=hode;
+           if(hode!=null){
+               i++;
+               for(;i<a.length;i++) {
+                   if (a[i] != null) {
+                       hale.neste = new Node<>(a[i], hale, null); // hale akal flytte fra en verdi til neste verdi i hele listen
+                       hale = hale.neste;
+                       antall++;
                    }
+               }
            }
        }
     }
