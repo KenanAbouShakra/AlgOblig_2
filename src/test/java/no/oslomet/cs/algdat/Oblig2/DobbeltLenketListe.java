@@ -220,7 +220,7 @@ private void indeksKontroll(int indeks){
             endringer++;
             return true;
         } else {
-            for (int i = 0; i < antall - 1; i++) { //fjern en node mellom to noder
+            for (int i = 1; i < antall - 1; i++) { //fjern en node mellom to noder
                 current = current.neste;
                 if (verdi.equals(current.verdi)) {
                     current.forrige.neste = current.neste;
@@ -397,10 +397,33 @@ private void indeksKontroll(int indeks){
         }
 
     } // class DobbeltLenketListeIterator
+    public static <T> void bytt(Liste<T> liste, int indeks1, int indeks2) {
+        T element1 = liste.hent(indeks1);
+        T element2 = liste.hent(indeks2);
+
+        liste.oppdater(indeks1, element2);
+        liste.oppdater(indeks2, element1);
+    }
+
 
     public static <T> void sorter(Liste<T> liste, Comparator<? super T> c) {
-        throw new UnsupportedOperationException();
+        int n = liste.antall();
+
+        for (int i = 1; i < n; i++) {
+            T element = liste.hent(i);
+            int j = i;
+
+            while (j > 0 && c.compare(element, liste.hent(j - 1)) < 0) {
+                bytt(liste, j, j - 1);
+                j--;
+            }
+
+            liste.oppdater(j, element);
+        }
     }
+
+
+
 
    /* public static void main(String[] args) {
         String[] s = {"Ole", null, "Per", "Kari", null};
